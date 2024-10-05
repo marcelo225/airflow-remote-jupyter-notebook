@@ -10,6 +10,8 @@ ARG GNAME=airflow
 ARG HOME_PATH=/home
 
 # Variables for future running containers
+ENV UID=UID
+ENV GID=UID
 ENV AIRFLOW_HOME=${HOME_PATH}/airflow
 ENV AIRFLOW_LOG_FOLDER=${AIRFLOW_HOME}/logs
 ENV AIRFLOW_PLUGIN_FOLDER=${AIRFLOW_HOME}/plugins
