@@ -19,13 +19,18 @@ jobs:
       - name: Build Docker Image for Airflow
         run: |
           docker build -t airflow ./airflow
+      
+      # Run the Airflow container
+      - name: Run Airflow Container
+        run: |
+          id
 
       # Run the Airflow container
       - name: Run Airflow Container
         run: |
           docker run -d \
             --name airflow \
-            --user $(id -u):$(id -g) \
+            --user 1001:1001 \
             -e AIRFLOW__CORE__EXECUTOR=SequentialExecutor \
             -p 8080:8080 \
             -v $(pwd)/airflow:/home/airflow \
