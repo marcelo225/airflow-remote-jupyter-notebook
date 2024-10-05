@@ -41,8 +41,7 @@ COPY --chown=${UNAME}:${GNAME} logs/ ${AIRFLOW_LOG_FOLDER}
 COPY --chown=${UNAME}:${GNAME} plugins/ ${AIRFLOW_PLUGIN_FOLDER}
 
 # Create and adjust permissions for the scheduler logs directory
-RUN mkdir -p ${AIRFLOW_LOG_FOLDER}/scheduler && \
-    chown -R ${UNAME}:${GNAME} ${AIRFLOW_LOG_FOLDER} && \
+RUN chown -R ${UNAME}:${GNAME} ${AIRFLOW_LOG_FOLDER} && \
     chmod -R 777 ${AIRFLOW_LOG_FOLDER}
 
 # Adjust permissions for /tmp and make entrypoint executable
