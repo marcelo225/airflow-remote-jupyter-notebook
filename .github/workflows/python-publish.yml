@@ -11,21 +11,9 @@ jobs:
       # Checkout the code
       - uses: actions/checkout@v3
 
-      # Install Docker
-      - name: Set up Docker
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
-          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-          sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-          sudo apt-get update
-          sudo apt-get install -y docker-ce docker-compose
-
-      # Start Docker service
-      - name: Start Docker Service
-        run: |
-          sudo systemctl start docker
-          sudo systemctl enable docker
+      # Set up Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
       # Build Docker Image for Airflow
       - name: Build Docker Image for Airflow
