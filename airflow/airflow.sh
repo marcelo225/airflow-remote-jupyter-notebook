@@ -15,7 +15,7 @@ airflow variables set jupyter_token "123"
 airflow variables set jupyter_base_path "/home/jovyan/work"
 
 # Install plugin manually
-python setup.py sdist 
+pip install build
 
 # Check if plugin is installed
 airflow plugin 
