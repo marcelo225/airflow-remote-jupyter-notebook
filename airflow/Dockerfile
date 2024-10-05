@@ -21,12 +21,10 @@ ENV PYTHONPATH=${AIRFLOW_HOME}
 ENV PATH="${HOME_PATH}/.local/bin:${PATH}"
 
 # Create airflow project folder and pip cache folder
-RUN mkdir -p ${AIRFLOW_HOME} ${HOME_PATH}/.local ${HOME_PATH}/.cache/pip
+RUN mkdir -p ${AIRFLOW_HOME}
 
 # Create pytest cache directory and adjust permissions
-RUN mkdir -p ${HOME_PATH}/.pytest_cache && \
-    chown -R ${UNAME}:${GNAME} ${HOME_PATH}/.pytest_cache && \
-    chmod -R 777 ${HOME_PATH}/.pytest_cache
+RUN chown -R ${UNAME}:${GNAME} ${HOME_PATH}
 
 # Set user permissions for the airflow folder and create airflow user
 RUN groupadd -g ${GID} ${UNAME} && \
