@@ -51,7 +51,7 @@ jobs:
       # Run pytest for unit testing
       - name: Run Unit Tests for Airflow Plugin
         run: |
-          docker exec airflow pytest /home/airflow/tests
+          docker exec airflow pytest
 
       # Stop and clean up containers
       - name: Tear Down Docker Environment
