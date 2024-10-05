@@ -15,14 +15,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Run id user
-      - name: Run id user
-        run: |
-          echo $(id -u)
-          echo $(id -g)
-          echo $(id -u --name)
-          echo $(id -g --name)
-
       # Build Docker Image for Airflow
       - name: Build Docker Image for Airflow
         run: |
@@ -45,9 +37,9 @@ jobs:
             airflow local
 
       # Show Airflow container logs for debugging
-      - name: Show Airflow Container Logs
-        run: |
-          docker logs airflow
+      # - name: Show Airflow Container Logs
+      #   run: |
+      #     docker logs airflow
 
       # Initialize the database
       - name: Initialize Airflow Database
@@ -97,7 +89,7 @@ jobs:
       # Install Twine
       - name: Install Twine
         run: |
-          python -m pip install --upgrade twine
+          python -m pip install --upgrade twine wheel setuptools
 
       # Build and publish the plugin package to PyPI
       - name: Build and publish
