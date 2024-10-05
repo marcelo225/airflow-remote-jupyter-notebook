@@ -38,7 +38,7 @@ jobs:
       # Install the plugin from the local distribution
       - name: Install Jupyter Plugin in Airflow
         run: |
-          docker exec airflow pip install .
+          docker exec airflow pip install --user .
 
       # Run the Airflow webserver and scheduler
       - name: Start Airflow Services
