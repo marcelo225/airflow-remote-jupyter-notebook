@@ -42,7 +42,7 @@ jobs:
             -e AIRFLOW__CORE__EXECUTOR=SequentialExecutor \
             -p 8080:8080 \
             -v $(pwd)/airflow:/home/airflow \
-            airflow
+            airflow local
 
       # Show Airflow container logs for debugging
       - name: Show Airflow Container Logs
