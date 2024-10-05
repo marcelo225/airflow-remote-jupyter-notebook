@@ -86,10 +86,11 @@ jobs:
         with:
           python-version: '3.8'
 
-      # Install Twine
-      - name: Install Twine
+      # Install required packages including build
+      - name: Install required packages
         run: |
-          python -m pip install --upgrade twine wheel setuptools
+          python -m pip install --upgrade pip
+          python -m pip install --upgrade twine wheel setuptools build
 
       # Build and publish the plugin package to PyPI
       - name: Build and publish
