@@ -47,8 +47,13 @@ jobs:
           docker exec -d airflow airflow db init
           docker exec -d airflow airflow scheduler
           docker exec -d airflow airflow webserver
-
-      # Run pytest for unit testing
+      
+      # Run for unit testing
+      - name: Prepare Log Directories for Testing
+        run: |
+          docker exec airflow mkdir -p /home/airflow/logs/scheduler/$(date +%Y-%m-%d)
+          docker exec airflow chmod -R 777 /home/airflow/logs/scheduler/$(date +%Y-%m-%d)
+      
       - name: Run Unit Tests for Airflow Plugin
         run: |
           docker exec airflow pytest /home/airflow/tests
