@@ -31,8 +31,8 @@ jobs:
             --build-arg GID=$(id -g) \
             --build-arg UNAME=$(id -u --name) \
             --build-arg GNAME=$(id -g --name) \
-            -t airflow ./airflow      
-      
+            -t airflow ./airflow
+
       # Run the Airflow container
       - name: Run Airflow Container
         run: |
@@ -44,17 +44,30 @@ jobs:
             -v $(pwd)/airflow:/home/airflow \
             airflow
 
-      # Install the plugin from the local distribution
-      - name: Install Jupyter Plugin in Airflow
+      # Show Airflow container logs for debugging
+      - name: Show Airflow Container Logs
         run: |
-          docker exec airflow pip install --user build
+          docker logs airflow
 
-      # Run the Airflow webserver and scheduler
-      - name: Start Airflow Services
+      # Initialize the database
+      - name: Initialize Airflow Database
         run: |
-          docker exec -d airflow airflow db init
+          docker exec airflow airflow db init
+
+      # Start Airflow Scheduler and Webserver
+      - name: Start Airflow Scheduler and Webserver
+        run: |
           docker exec -d airflow airflow scheduler
           docker exec -d airflow airflow webserver
+
+      # Wait for a few seconds to ensure services are running
+      - name: Wait for Airflow Services to Start
+        run: sleep 10
+
+      # Install Jupyter Plugin in Airflow globally
+      - name: Install Jupyter Plugin in Airflow
+        run: |
+          docker exec airflow pip install build
 
       # Run pytest for unit testing
       - name: Run Unit Tests for Airflow Plugin
