@@ -21,10 +21,7 @@ ENV PYTHONPATH=${AIRFLOW_HOME}
 ENV PATH="${HOME_PATH}/.local/bin:${PATH}"
 
 # Create airflow project folder and pip cache folder
-RUN mkdir -p ${AIRFLOW_HOME}
-
-# Create pytest cache directory and adjust permissions
-RUN chown -R ${UNAME}:${GNAME} ${HOME_PATH}
+RUN mkdir -p ${HOME_PATH} ${AIRFLOW_HOME} ${AIRFLOW_LOG_FOLDER} ${AIRFLOW_PLUGIN_FOLDER}
 
 # Set user permissions for the airflow folder and create airflow user
 RUN groupadd -g ${GID} ${UNAME} && \
@@ -50,9 +47,6 @@ RUN pip3 install --no-cache-dir --upgrade pip
 
 # Install other Python dependencies globally
 RUN pip3 install --no-cache-dir -r ${AIRFLOW_HOME}/requirements.txt
-
-# Ensure the airflow user has write access to pip cache folders
-RUN chown -R ${UNAME}:${GNAME} ${HOME_PATH}/.local ${HOME_PATH}/.cache/pip
 
 # Define user home and switch to airflow user
 USER ${UNAME}
