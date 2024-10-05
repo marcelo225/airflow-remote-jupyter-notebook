@@ -21,7 +21,7 @@ ENV PYTHONPATH=${AIRFLOW_HOME}
 ENV PATH="${HOME_PATH}/.local/bin:${PATH}"
 
 # Create airflow project folder and pip folder
-RUN mkdir -p ${AIRFLOW_HOME} ${HOME_PATH}/.local
+RUN mkdir -p ${AIRFLOW_HOME} ${HOME_PATH}/.cache/pip
 
 # Set user permissions for the airflow folder
 RUN groupadd -g ${GID} ${UNAME} && \
@@ -43,15 +43,18 @@ RUN chmod +x ${AIRFLOW_HOME}/entrypoint.sh
 # Update pip globally as root
 RUN pip3 install --no-cache-dir --upgrade pip
 
-# Install other python dependencies globally as root
-RUN pip3 install --no-cache-dir -r ${AIRFLOW_HOME}/requirements.txt
-
-# Ensure the airflow user has write access to the .local directory
+# Ensure airflow user has write access to .local and .cache directories
 RUN mkdir -p ${HOME_PATH}/.local && \
-    chown -R ${UNAME}:${GNAME} ${HOME_PATH}/.local
+    mkdir -p ${HOME_PATH}/.cache/pip && \
+    chown -R ${UNAME}:${GNAME} ${HOME_PATH}/.local ${HOME_PATH}/.cache/pip
 
-# Define user home and switch back to airflow user
+# Switch to airflow user before installing packages
 USER ${UNAME}
+
+# Install Python dependencies as airflow user (avoids permission errors)
+RUN pip3 install --no-cache-dir --user -r ${AIRFLOW_HOME}/requirements.txt
+
+# Set airflow home as working directory
 WORKDIR $AIRFLOW_HOME
 
 # Expose the airflow web server port
