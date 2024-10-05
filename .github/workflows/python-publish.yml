@@ -20,6 +20,11 @@ jobs:
         run: |
           docker build -t airflow ./airflow
 
+      # Run user
+      - name: Run ID
+        run: |
+          id
+      
       # Run the Airflow container
       - name: Run Airflow Container
         run: |
