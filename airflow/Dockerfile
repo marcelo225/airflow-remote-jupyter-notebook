@@ -47,8 +47,7 @@ RUN pip3 install --no-cache-dir --upgrade pip
 RUN pip3 install --no-cache-dir -r ${AIRFLOW_HOME}/requirements.txt
 
 # Ensure the airflow user has write access
-RUN chown -R ${UNAME}:${GNAME} ${HOME_PATH}/.local && \
-    chown -R ${UNAME}:${GNAME} ${HOME_PATH}/.cache/pip
+RUN chown -R ${UNAME}:${GNAME} ${HOME_PATH}/.local ${HOME_PATH}/.cache/pip
 
 # Define user home and switch back to airflow user
 USER ${UNAME}
