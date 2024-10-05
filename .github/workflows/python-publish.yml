@@ -2,7 +2,7 @@ name: Upload Airflow Jupyter Notebook Plugin
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
 
 jobs:
   build:
