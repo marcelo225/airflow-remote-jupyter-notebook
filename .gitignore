@@ -5,6 +5,7 @@ dist/
 .pytest_cache
 .ipython
 airflow/logs/*
+!airflow/logs/.gitkeep
 .ipython/
 .jupyter/
 .local/
