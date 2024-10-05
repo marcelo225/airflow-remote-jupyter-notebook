@@ -1,0 +1,17 @@
+.env
+__pycache__/
+.local/
+dist/
+.pytest_cache
+.ipython
+airflow/logs/*
+.ipython/
+.jupyter/
+.local/
+airflow.cfg
+*.log
+webserver_config.py
+airflow.db
+build/
+*.egg-info
+airflow-webserver.pid

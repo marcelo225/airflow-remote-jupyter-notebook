@@ -1,0 +1,73 @@
+name: Upload Airflow Jupyter Notebook Plugin
+
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the code
+      - uses: actions/checkout@v3
+
+      # Build Docker Image for Airflow
+      - name: Build Docker Image for Airflow
+        run: |
+          docker-compose -f docker-compose.yml up --build -d airflow
+
+      # Install dependencies in the Airflow environment
+      - name: Install Python dependencies in Airflow
+        run: |
+          docker exec airflow pip install --upgrade -r /home/airflow/requirements.txt
+
+      # Install the plugin from the local distribution
+      - name: Install Jupyter Plugin in Airflow
+        run: |
+          docker exec airflow pip install .
+
+      # Run the Airflow webserver and scheduler
+      - name: Start Airflow Services
+        run: |
+          docker exec -d airflow airflow db init
+          docker exec -d airflow airflow scheduler
+          docker exec -d airflow airflow webserver
+
+      # Run pytest for unit testing
+      - name: Run Unit Tests for Airflow Plugin
+        run: |
+          docker exec airflow pytest /home/airflow/tests
+
+      # Stop and clean up containers
+      - name: Tear Down Docker Environment
+        run: |
+          docker-compose -f docker-compose.yml down
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      # Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.8'
+
+      # Install Twine
+      - name: Install Twine
+        run: |
+          python -m pip install --upgrade twine
+
+      # Build and publish the plugin package to PyPI
+      - name: Build and publish
+        env:
+          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+          TWINE_PYPI_URL: ${{ secrets.PYPI_URL }}
+        run: |
+          python setup.py sdist
+          twine upload --repository-url $TWINE_PYPI_URL -u $TWINE_USERNAME -p $TWINE_PASSWORD ariflow/dist/*
