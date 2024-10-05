@@ -21,8 +21,7 @@ ENV PYTHONPATH=${AIRFLOW_HOME}
 ENV PATH="${HOME_PATH}/.local/bin:${PATH}"
 
 # Create airflow project folder and pip folder
-RUN mkdir -p ${AIRFLOW_HOME} ${HOME_PATH}/.local
-RUN mkdir -p ${AIRFLOW_HOME} ${HOME_PATH}/.cache/pip
+RUN mkdir -p ${AIRFLOW_HOME} ${HOME_PATH}/.local ${HOME_PATH}/.cache/pip
 
 # Set user permissions for the airflow folder
 RUN groupadd -g ${GID} ${UNAME} && \
