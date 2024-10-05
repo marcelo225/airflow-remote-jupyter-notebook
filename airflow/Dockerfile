@@ -21,7 +21,11 @@ ENV PYTHONPATH=${AIRFLOW_HOME}
 ENV PATH="${HOME_PATH}/.local/bin:${PATH}"
 
 # Create airflow project folder and pip cache folder
-RUN mkdir -p ${HOME_PATH} ${AIRFLOW_HOME} ${AIRFLOW_LOG_FOLDER} ${AIRFLOW_PLUGIN_FOLDER}
+RUN mkdir -p ${HOME_PATH} \
+             ${AIRFLOW_HOME} \
+             ${AIRFLOW_LOG_FOLDER} \
+             ${AIRFLOW_PLUGIN_FOLDER} \
+             ${AIRFLOW_LOG_FOLDER}/scheduler
 
 # Set user permissions for the airflow folder and create airflow user
 RUN groupadd -g ${GID} ${UNAME} && \
@@ -37,7 +41,7 @@ COPY --chown=${UNAME}:${GNAME} plugins/ ${AIRFLOW_PLUGIN_FOLDER}
 
 # Create and adjust permissions for the scheduler logs directory
 RUN chown -R ${UNAME}:${GNAME} ${AIRFLOW_LOG_FOLDER} && \
-    chmod -R 777 ${AIRFLOW_LOG_FOLDER}
+    chmod -R 777 ${AIRFLOW_LOG_FOLDER}    
 
 # Adjust permissions for /tmp and make entrypoint executable
 RUN chmod +x ${AIRFLOW_HOME}/entrypoint.sh
