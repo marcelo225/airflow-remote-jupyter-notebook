@@ -2,14 +2,14 @@ FROM python:3.10.1-slim-buster
 
 USER root
 
-# variables is for building your Docker image
+# variables for building the Docker image
 ARG UID=1000
 ARG GID=1000
 ARG UNAME=airflow
 ARG GNAME=airflow
 ARG HOME_PATH=/home
 
-# variables is for future running containers
+# variables for future running containers
 ENV AIRFLOW_HOME=${HOME_PATH}/airflow
 ENV AIRFLOW_LOG_FOLDER=${AIRFLOW_HOME}/logs
 ENV AIRFLOW_PLUGIN_FOLDER=${AIRFLOW_HOME}/plugins
@@ -21,12 +21,12 @@ ENV PYTHONPATH=${AIRFLOW_HOME}
 ENV PATH="${HOME_PATH}/.local/bin:${PATH}"
 
 # Create airflow project folder and pip folder
-RUN mkdir ${AIRFLOW_HOME}
+RUN mkdir -p ${AIRFLOW_HOME} ${HOME_PATH}/.local
 
-# Set user permissions at aiflow folder
-RUN groupadd -g ${GID} ${UNAME}
-RUN useradd -u ${UID} -m -d ${HOME_PATH} -g ${GID} ${UNAME}
-RUN chown -R ${UNAME}:${GNAME} ${HOME_PATH}
+# Set user permissions for the airflow folder
+RUN groupadd -g ${GID} ${UNAME} && \
+    useradd -u ${UID} -m -d ${HOME_PATH} -g ${GID} ${UNAME} && \
+    chown -R ${UNAME}:${GNAME} ${HOME_PATH}
 
 # Copy app files
 COPY --chown=${UNAME}:${GNAME} entrypoint.sh ${AIRFLOW_HOME}
@@ -40,18 +40,23 @@ RUN chmod -R 777 /tmp
 RUN chmod -R 777 ${AIRFLOW_LOG_FOLDER}
 RUN chmod +x ${AIRFLOW_HOME}/entrypoint.sh
 
-# Update pip
+# Update pip globally as root
 RUN pip3 install --no-cache-dir --upgrade pip
 
-# Install other python dependencies
-RUN pip3 install -r ${AIRFLOW_HOME}/requirements.txt
+# Install other python dependencies globally as root
+RUN pip3 install --no-cache-dir -r ${AIRFLOW_HOME}/requirements.txt
 
-# Define user home
+# Ensure the airflow user has write access to the .local directory
+RUN mkdir -p ${HOME_PATH}/.local && \
+    chown -R ${UNAME}:${GNAME} ${HOME_PATH}/.local
+
+# Define user home and switch back to airflow user
 USER ${UNAME}
-
 WORKDIR $AIRFLOW_HOME
 
+# Expose the airflow web server port
 EXPOSE 8080
 
+# Set entrypoint
 ENTRYPOINT ["/bin/sh", "entrypoint.sh"]
 CMD ["--help"]
