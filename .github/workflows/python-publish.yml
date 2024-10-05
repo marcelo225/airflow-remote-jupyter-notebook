@@ -15,6 +15,14 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      # Run id user
+      - name: Run id user
+        run: |
+          echo $(id -u)
+          echo $(id -g)
+          echo $(id -u --name)
+          echo $(id -g --name)
+
       # Build Docker Image for Airflow
       - name: Build Docker Image for Airflow
         run: |
@@ -23,12 +31,7 @@ jobs:
             --build-arg GID=$(id -g) \
             --build-arg UNAME=$(id -u --name) \
             --build-arg GNAME=$(id -g --name) \
-            -t airflow ./airflow
-      
-      # Run id user
-      - name: Run id user
-        run: |
-          id
+            -t airflow ./airflow      
       
       # Run the Airflow container
       - name: Run Airflow Container
@@ -39,11 +42,6 @@ jobs:
             -p 8080:8080 \
             -v $(pwd)/airflow:/home/airflow \
             airflow
-
-      # Install dependencies in the Airflow environment
-      - name: Install Python dependencies in Airflow
-        run: |
-          docker exec airflow pip install --user --upgrade -r requirements.txt
 
       # Install the plugin from the local distribution
       - name: Install Jupyter Plugin in Airflow
