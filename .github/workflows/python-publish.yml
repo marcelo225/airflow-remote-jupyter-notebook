@@ -18,20 +18,26 @@ jobs:
       # Build Docker Image for Airflow
       - name: Build Docker Image for Airflow
         run: |
-          docker build -t airflow ./airflow
+          docker build \
+            --build-arg UID=$(id -u) \
+            --build-arg GID=$(id -g) \
+            -t airflow ./airflow
+      
+      # Run id user
+      - name: Run id user
+        run: |
+          id
       
       # Run the Airflow container
       - name: Run Airflow Container
         run: |
           docker run -d \
             --name airflow \
-            --user 1001:1001 \
+            --user $(id -u):$(id -g) \
             -e AIRFLOW__CORE__EXECUTOR=SequentialExecutor \
-            -e UID=1001 \
-            -e GID=1001 \
             -p 8080:8080 \
             -v $(pwd)/airflow:/home/airflow \
-            airflow local
+            airflow
 
       # Install dependencies in the Airflow environment
       - name: Install Python dependencies in Airflow

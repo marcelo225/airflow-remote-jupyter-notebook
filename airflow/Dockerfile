@@ -9,14 +9,10 @@ ARG UNAME=airflow
 ARG GNAME=airflow
 ARG HOME_PATH=/home
 
-# Variables for future running containers
-ENV UID=UID
-ENV GID=UID
+# Update Python and global environment paths
 ENV AIRFLOW_HOME=${HOME_PATH}/airflow
 ENV AIRFLOW_LOG_FOLDER=${AIRFLOW_HOME}/logs
 ENV AIRFLOW_PLUGIN_FOLDER=${AIRFLOW_HOME}/plugins
-
-# Update Python and global environment paths
 ENV PYTHONPATH=${AIRFLOW_HOME}
 
 # Add pip user folder to PATH to avoid pip installation errors
@@ -30,7 +26,7 @@ RUN mkdir -p ${HOME_PATH} \
              ${AIRFLOW_LOG_FOLDER}/scheduler
 
 # Set user permissions for the airflow folder and create airflow user
-RUN groupadd -g ${GID} ${UNAME} && \
+RUN groupadd -g ${GID} ${GNAME} && \
     useradd -u ${UID} -m -d ${HOME_PATH} -g ${GID} ${UNAME} && \
     chown -R ${UNAME}:${GNAME} ${HOME_PATH}
 
