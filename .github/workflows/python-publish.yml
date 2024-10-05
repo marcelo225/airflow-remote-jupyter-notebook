@@ -21,7 +21,7 @@ jobs:
           docker build -t airflow ./airflow
       
       # Run the Airflow container
-      - name: Run Airflow Container
+      - name: Run id
         run: |
           id
 
@@ -44,7 +44,7 @@ jobs:
       # Install the plugin from the local distribution
       - name: Install Jupyter Plugin in Airflow
         run: |
-          docker exec airflow pip install --user build
+          docker exec airflow pip install build
 
       # Run the Airflow webserver and scheduler
       - name: Start Airflow Services
