@@ -43,7 +43,7 @@ jobs:
       # Install dependencies in the Airflow environment
       - name: Install Python dependencies in Airflow
         run: |
-          docker exec airflow pip install --upgrade -r /home/airflow/requirements.txt
+          docker exec airflow pip install --user --upgrade -r /home/airflow/requirements.txt
 
       # Install the plugin from the local distribution
       - name: Install Jupyter Plugin in Airflow
