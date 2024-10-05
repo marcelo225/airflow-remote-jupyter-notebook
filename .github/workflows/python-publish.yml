@@ -28,6 +28,7 @@ jobs:
             -e AIRFLOW__CORE__EXECUTOR=SequentialExecutor \
             -p 8080:8080 \
             -v $(pwd)/airflow:/home/airflow \
+            --user $(id -u):$(id -g) \
             airflow local
 
       # Install dependencies in the Airflow environment
