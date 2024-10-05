@@ -11,21 +11,24 @@ jobs:
       # Checkout the code
       - uses: actions/checkout@v3
 
-      # Install Docker
-      - name: Install Docker
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker.io
-
-      # Install Docker Compose
-      - name: Install Docker Compose
-        run: |
-          sudo apt-get install -y docker-compose
+      # Set up Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
       # Build Docker Image for Airflow
       - name: Build Docker Image for Airflow
         run: |
-          docker-compose -f docker-compose.yml up --build -d airflow
+          docker build -t airflow ./airflow
+
+      # Run the Airflow container
+      - name: Run Airflow Container
+        run: |
+          docker run -d \
+            --name airflow \
+            -e AIRFLOW__CORE__EXECUTOR=SequentialExecutor \
+            -p 8080:8080 \
+            -v $(pwd)/airflow:/home/airflow \
+            airflow local
 
       # Install dependencies in the Airflow environment
       - name: Install Python dependencies in Airflow
@@ -52,7 +55,8 @@ jobs:
       # Stop and clean up containers
       - name: Tear Down Docker Environment
         run: |
-          docker-compose -f docker-compose.yml down
+          docker stop airflow
+          docker rm airflow
 
   publish:
     needs: build
