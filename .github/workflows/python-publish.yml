@@ -38,6 +38,7 @@ jobs:
         run: |
           docker run -d \
             --name airflow \
+            --user $(id -u):$(id -g) \
             -e AIRFLOW__CORE__EXECUTOR=SequentialExecutor \
             -p 8080:8080 \
             -v $(pwd)/airflow:/home/airflow \
