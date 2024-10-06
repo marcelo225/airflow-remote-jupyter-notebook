@@ -83,7 +83,7 @@ jobs:
       # Copy README.md and images
       - name: Copy README.md and image
         run: |
-          cp README.md qr_code.png architecture.png ./airflow/          
+          cp README.md qr_code.png architecture.png airflow/          
 
       # Build and publish the plugin package to PyPI
       - name: Build and publish
