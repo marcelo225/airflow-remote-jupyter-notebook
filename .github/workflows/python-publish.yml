@@ -80,10 +80,10 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install --upgrade twine wheel setuptools build
 
-      # Copy README.md and images
-      - name: Copy README.md and image
+      # Copy README.md
+      - name: Copy README.md
         run: |
-          cp README.md qr_code.png architecture.png airflow/          
+          cp README.md airflow/
 
       # Build and publish the plugin package to PyPI
       - name: Build and publish
