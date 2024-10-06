@@ -17,7 +17,7 @@
 
 ## What is it?
 
-!['architecture'](https://raw.githubusercontent.com/marcelo225/airflow-remote-jupyter-notebook/main/architecture.png)
+!['architecture'](https://github.com/marcelo225/airflow-remote-jupyter-notebook/blob/main/architecture.png)
 
 This plugin is designed to allow the execution of Jupyter Notebooks remotely from within an Airflow DAG. By using the plugin, users can integrate and manage Jupyter Notebook workflows as part of their Airflow pipelines, ensuring that data analysis or machine learning code can be orchestrated and run automatically within the DAG scheduling system.
 
@@ -29,7 +29,7 @@ Package link: https://pypi.org/project/airflow-remote-jupyter-notebook/
 
 If you find this library helpful, consider buying me a coffee! Your support helps maintain and improve the project, allowing me to dedicate more time to developing new features, fixing bugs, and providing updates.
 
-![coffee](https://raw.githubusercontent.com/marcelo225/airflow-remote-jupyter-notebook/main/qr_code.png)
+![coffee](https://github.com/marcelo225/airflow-remote-jupyter-notebook/blob/main/qr_code.png)
 
 ## Dependencies
 
