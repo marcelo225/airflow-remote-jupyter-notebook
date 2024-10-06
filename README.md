@@ -3,6 +3,7 @@
 - [Airflow run Jupyter Notebook Remote](#airflow-run-jupyter-notebook-remote)
   - [What is it?](#what-is-it)
   - [Would you mind buying me a coffee?](#would-you-mind-buying-me-a-coffee)
+  - [Dependencies](#dependencies)
   - [Installation](#installation)
     - [Via Pypi Package:](#via-pypi-package)
     - [Manually](#manually)
@@ -29,6 +30,13 @@ Package link: https://pypi.org/project/airflow-remote-jupyter-notebook/
 If you find this library helpful, consider buying me a coffee! Your support helps maintain and improve the project, allowing me to dedicate more time to developing new features, fixing bugs, and providing updates.
 
 ![coffee](https://raw.githubusercontent.com/marcelo225/airflow-remote-jupyter-notebook/main/qr_code.png)
+
+## Dependencies
+
+- [Python 3](https://www.python.org/)
+- [Requests](https://pypi.org/project/requests/)
+- [Websockets](https://pypi.org/project/websockets/)
+- [Asyncio](https://pypi.org/project/asyncio/)
 
 ## Installation
 
